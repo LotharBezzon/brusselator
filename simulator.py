@@ -11,10 +11,10 @@ dx = 1.0
 Omega = 5000.0        # System Volume (Noise level)
 
 # Model Coefficients
-a = 3.0
-b = 6.0
-Dx = 1.0
-Dy = 10.0
+a = 1.0
+b = 5.0
+Dx = 0.0
+Dy = 0.0
 
 # --- 2. Initialization ---
 x_ss = 1.0
