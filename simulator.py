@@ -11,10 +11,10 @@ dx = 1.0
 Omega = 5000.0        # System Volume (Noise level)
 
 # Model Coefficients
-a = 1.0
-b = 5.0
-Dx = 0.0
-Dy = 0.0
+a = 5.0
+b = 3.0
+Dx = 1.0
+Dy = 10.0
 
 # --- 2. Initialization ---
 x_ss = 1.0
@@ -117,18 +117,34 @@ plt.grid(True, alpha=0.3)
 plt.savefig(f'pixel_trace_a{a}_b{b}_om{Omega}_Dx{Dx}_Dy{Dy}.png', dpi=150)
 print("   Saved 'pixel_trace.png'")
 
+# --- 6. Save the Phase Space Trajectory (X vs Y) ---
+print("3. Generating Phase Space Plot...")
 plt.figure(figsize=(6, 6))
 plt.plot(history_x, history_y, color='purple', alpha=0.6, linewidth=0.8)
+
 # Mark the start and end points
 plt.scatter(history_x[0], history_y[0], color='green', label='Start', zorder=5)
 plt.scatter(history_x[-1], history_y[-1], color='red', label='End', zorder=5)
 # Mark the theoretical steady state
 plt.scatter([x_ss], [y_ss], color='black', marker='x', s=100, label='Steady State', zorder=5)
 
-plt.title("Phase Space Trajectory (y vs x)")
+plt.title(f"Phase Space (Center Pixel)\na={a}, b={b}, Omega={Omega}")
 plt.xlabel("Concentration X")
 plt.ylabel("Concentration Y")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.savefig(f'phase_portrait_a{a}_b{b}_om{Omega}_Dx{Dx}_Dy{Dy}.png', dpi=150)
+print("   Saved 'phase_portrait.png'")
+
+# --- 7. Save Final Frame (Heatmap) as Image ---
+print("4. Saving Final Frame...")
+fig_final, ax_final = plt.subplots(figsize=(6, 6))
+im_final = ax_final.imshow(y, cmap='inferno', interpolation='bicubic', vmin=0, vmax=y_ss*2)
+ax_final.axis('off')
+ax_final.set_title(f"Final State (Omega={Omega}, a={a}, b={b}, Dx={Dx}, Dy={Dy})")
+# Add a colorbar to make the image more informative
+plt.colorbar(im_final, ax=ax_final, fraction=0.046, pad=0.04)
+plt.tight_layout()
+plt.savefig(f'final_frame_a{a}_b{b}_om{Omega}_Dx{Dx}_Dy{Dy}.png', dpi=150)
+print("   Saved 'final_frame.png'")
